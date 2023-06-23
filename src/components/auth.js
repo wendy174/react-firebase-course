@@ -31,13 +31,13 @@ const logout = async () => {
   }
 }
   
-// const signInWithGoogle = async () => { 
-//   try { // handle errors 
-//   await signInWithPopup(auth, googleProvider) // 
-//   } catch (err) { 
-//   console.error(err); 
-//   } 
-// }; 
+const signInWithGoogle = async () => { 
+  try { // handle errors 
+  await signInWithPopup(auth, googleProvider) // 
+  } catch (err) { 
+  console.error(err); 
+  } 
+}; 
   
   
   return ( 
