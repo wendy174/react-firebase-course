@@ -17,6 +17,11 @@ export function App() {
         // we will do this using getDocs 
         try  { 
         const data = await getDocs(moviesCollectionRef)
+        const filteredData = data.docs.map((doc) => (
+          {...doc.data(), 
+          id: doc.id
+        }))
+        setMovieList(filteredData)
         } catch (err) { 
           console.error(err)
         }
@@ -27,6 +32,15 @@ export function App() {
   return (
     <div className="App">
       <Auth />
+
+      <div>
+        {movieList.map((movie => ( 
+        <div> 
+          <h1> {movie.title} </h1> 
+          <p> {movie.releaseData} </p>
+        </div> 
+        )))}
+      </div>
     </div>
   ) 
 } 
