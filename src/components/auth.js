@@ -42,6 +42,7 @@ const signInWithGoogle = async () => {
   
   return ( 
     <div>
+      <h1>Sign In/Sign Out</h1>
       <input placeholder='Email...' onChange = {e => setEmail(e.target.value)}/> 
       <input placeholder='Password...' onChange = {e => setPassword(e.target.value)}/>
       <button onClick={signIn}> Sign In </button> 
