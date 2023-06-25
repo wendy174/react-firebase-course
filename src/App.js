@@ -3,7 +3,7 @@ import {Auth} from './components/auth';
 import { useState, useEffect } from 'react'; 
 import "./App.css"; 
 import {db} from "./config/firebase"; 
-import { getDocs, collection, addDoc} from 'firebase/firestore' // getdocs gets info 
+import { getDocs, collection, addDoc} from 'firebase/firestore' // getdocs gets all info 
 
 export function App() {
   const [movieList, setMovieList] = useState([])
@@ -13,24 +13,28 @@ export function App() {
   const [newReleaseDate, setNewReleaseDate ] = useState(0)
   const [isNewMovieOscar, setIsNewMovieOscar] = useState(false)
 
-  const moviesCollectionRef = collection(db,'movies') // grabs movies from db 
+  console.log(newReleaseDate)
 
-  useEffect(() => {  // async is needed inside useEffect to useFirebase 
-      const getMovieList = async () => { 
-        // read the data 
-        // set movielist 
-        // we will do this using getDocs 
-        try  { 
-        const data = await getDocs(moviesCollectionRef)
-        const filteredData = data.docs.map((doc) => (
-          {...doc.data(), 
-          id: doc.id
-        }))
-        setMovieList(filteredData)
-        } catch (err) { 
-          console.error(err)
-        }
-    }
+  const moviesCollectionRef = collection(db,'movies') // specify which collection you want data from 
+
+  // getMovies is inside of use effect because we need async notation 
+// async is needed inside useEffect to useFirebase 
+const getMovieList = async () => { 
+  // read the data 
+  // set the movie list 
+  try  { 
+  const data = await getDocs(moviesCollectionRef)
+  const filteredData = data.docs.map((doc) => (
+    {...doc.data(), 
+    id: doc.id
+  }))
+  setMovieList(filteredData)
+  } catch (err) { 
+    console.error(err)
+  }
+}
+  useEffect(() => {  
+    getMovieList(); 
   }, [])
 
   const onSubmitMovie = async () => { 
@@ -40,17 +44,18 @@ export function App() {
       releaseDate: newReleaseDate, 
       receivedAnOscar: isNewMovieOscar
     })
+
+      getMovieList(); 
     } catch(err) { 
       console.error(err)
     }
   }
-  
+
 
   return (
     <div className="App">
       <Auth />
     
-      <hr></hr>
       <hr></hr>
       <div>
         <h1>Submit Movie</h1>
@@ -63,8 +68,9 @@ export function App() {
       <div>
         {movieList.map((movie => ( 
         <div> 
+          <hr></hr>
           <h1> {movie.title} </h1> 
-          <p> {movie.releaseData} </p>
+          <p> {movie.releaseDate} </p>
         </div> 
         )))}
       </div>
